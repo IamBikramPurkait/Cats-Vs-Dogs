@@ -3,3 +3,5 @@
 *.vscode
 Dataset
 Testing
+venv
+.ipynb_checkpoints
