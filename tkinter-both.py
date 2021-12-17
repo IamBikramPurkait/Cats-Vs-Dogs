@@ -48,7 +48,7 @@ link_entry = Text(button_frm,
                   font=("Comic Sans MS", 12, "bold"), width=50, height=2, fg="green", relief="solid")
 link_entry.pack(pady=5)
 link_entry.insert(
-    "1.0", "Delete this text and Paste the Image address/link here and then press Predict button")
+    "1.0", "Delete this text and Paste the Image address/link here and then press Predict button. Press q for exit anytime.")
 
 
 # prediction.set('Image Uploaded')
@@ -133,5 +133,7 @@ body_frm.pack(pady=20)
 image_lbl = Label(body_frm, fg="blue")
 image_lbl.pack()
 
+
+window.bind('<q>', exit)
 
 window.mainloop()
