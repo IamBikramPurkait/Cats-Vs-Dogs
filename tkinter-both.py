@@ -16,7 +16,7 @@ CATEGORIES = ["Dog", "Cat"]
 window = Tk()
 
 
-window.geometry('600x600')
+window.geometry('600x550')
 window.title('Dog vs Cat')
 window.resizable(False, False)
 
@@ -40,25 +40,15 @@ style.configure('TButton', background='white', foreground='black', font=("Comic 
 style.map('TButton', background=[('active', 'red')])
 
 
-button_frm = Frame(window)
-button_frm.pack()
+button_frm = Frame()
+button_frm.pack(pady=20)
 
-# link_var = StringVar()
-# textvariable = link_var,
-link_entry = Text(button_frm,
-                  font=("Comic Sans MS", 12, "bold"), width=50, height=2, fg="green", relief="solid", padx=5)
+
+link_entry = Entry(button_frm,
+                   font=("Comic Sans MS", 12, "bold"), width=50,  fg="green", relief="solid")
 link_entry.pack(pady=5)
 link_entry.insert(
-    "1.0", "Delete this text and Paste the Image address/link here and then press Predict button")
-
-# global img_link
-# img_link = link_var.get()
-# print(img_link)
-
-
-# upload_btn = ttk.Button(body_frm, text='UPLOAD',
-#                         command=lambda: upload_action())
-# upload_btn.pack()
+    0, "Delete this text and Paste the Image address/link here and then press Predict button")
 
 
 # prediction.set('Image Uploaded')
@@ -95,7 +85,7 @@ def upload_action():
 
 def download_image():
     # Get Image URL using get() method
-    image = requests.get(link_entry.get("1.0", END))
+    image = requests.get(link_entry.get())
 
     # Check whether the Image URL is correct or not
     if image.status_code == 200:
