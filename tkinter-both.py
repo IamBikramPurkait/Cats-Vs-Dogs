@@ -1,4 +1,3 @@
-from tkinter import messagebox
 import tensorflow as tf
 import cv2
 from tkinter import *
@@ -10,15 +9,6 @@ import requests
 
 filename = ''
 CATEGORIES = ["Dog", "Cat"]
-
-
-# def upload_action():
-#     global img
-#     filename = filedialog.askopenfilename()
-#     img = Image.open(filename)
-#     img = img.resize((300, 300), Image.ANTIALIAS)
-#     img = ImageTk.PhotoImage(img)
-#     image_lbl.config(image=img)
 
 
 # ------------------------------------------------------------------------------------------------
@@ -43,19 +33,19 @@ main_title.pack()
 # -----------------------------------------------------------------------------------------------------
 
 
-body_frm = Frame()
-body_frm.pack(pady=20)
-
-
 style = ttk.Style()
 style.theme_use('alt')
 style.configure('TButton', background='white', foreground='black', font=("Comic Sans MS", 15, "bold"),
                 borderwidth=2, focusthickness=3, focuscolor='none')
 style.map('TButton', background=[('active', 'red')])
 
+
+button_frm = Frame(window)
+button_frm.pack()
+
 # link_var = StringVar()
 # textvariable = link_var,
-link_entry = Text(body_frm,
+link_entry = Text(button_frm,
                   font=("Comic Sans MS", 12, "bold"), width=50, height=2, fg="green", relief="solid", padx=5)
 link_entry.pack(pady=5)
 link_entry.insert(
@@ -81,6 +71,26 @@ prediction_text = Label(
 prediction_text.pack()
 
 prediction_var.set('Select Dog or Cat image only')
+
+
+def upload_action():
+    global img
+    filename = filedialog.askopenfilename()
+    img = Image.open(filename)
+    img = img.resize((300, 300), Image.ANTIALIAS)
+    img = ImageTk.PhotoImage(img)
+    image_lbl.config(image=img)
+
+    model = tf.keras.models.load_model("64x3-CNN.model")
+
+    def prepare(image):
+        IMG_SIZE = 70
+        img_array = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
+        new_array = cv2.resize(img_array, (IMG_SIZE, IMG_SIZE))
+        return new_array.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
+
+    prediction = model.predict([prepare(filename)])
+    prediction_var.set(CATEGORIES[int(prediction[0][0])])
 
 
 def download_image():
@@ -117,10 +127,18 @@ def download_image():
     prediction_var.set(CATEGORIES[int(prediction[0][0])])
 
 
-download_image_btn = ttk.Button(
-    body_frm, text='Predict', command=download_image)
-download_image_btn.pack(pady=5)
+upload_btn = ttk.Button(button_frm, text='Upload Image From Local',
+                        command=upload_action)
+upload_btn.pack(pady=3)
 
+
+download_image_btn = ttk.Button(
+    button_frm, text='Predict', command=download_image)
+download_image_btn.pack(pady=3)
+
+
+body_frm = Frame()
+body_frm.pack(pady=20)
 
 image_lbl = Label(body_frm, fg="blue")
 image_lbl.pack()
