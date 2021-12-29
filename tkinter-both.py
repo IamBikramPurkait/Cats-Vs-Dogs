@@ -69,7 +69,8 @@ def upload_action():
     img = Image.open(filename)
     img = img.resize((300, 300), Image.ANTIALIAS)
     img = ImageTk.PhotoImage(img)
-    image_lbl.config(image=img)
+    image_lbl.config(image=img, borderwidth=2,
+                     relief='solid')
 
     model = tf.keras.models.load_model("64x3-CNN.model")
 
